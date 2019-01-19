@@ -695,6 +695,10 @@ int main(int argc, char** argv)
         else if (op == "Transpose")
         {
             fprintf(pp, "%-16s", "Permute");
+        } 
+        else if (op == "Upsample") 
+        {
+            fprintf(pp, "%-16s", "Interp");
         }
         else
         {
@@ -1400,6 +1404,20 @@ int main(int argc, char** argv)
                 else
                     fprintf(stderr, "Unsupported transpose type !\n");
             }
+        }
+        else if (op == "Upsample")
+        {
+            std::string mode = get_node_attr_s(node, "mode");
+            float height_scale = get_node_attr_f(node, "height_scale");
+            float width_scale = get_node_attr_f(node, "width_scale");
+            if (mode == "bilinear") 
+                fprintf(pp, " 0=2");
+            else if (mode == "nearest") 
+                fprintf(pp, " 0=1");
+            fprintf(pp, " 1=%f", height_scale);
+            fprintf(pp, " 2=%f", width_scale);
+            fprintf(pp, " 3=0");
+            fprintf(pp, " 4=0");
         }
         else
         {
